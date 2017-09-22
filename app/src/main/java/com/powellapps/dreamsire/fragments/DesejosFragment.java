@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.adapter.AdapterDesejos;
+import com.powellapps.dreamsire.dao.DesejoDAO;
 import com.powellapps.dreamsire.model.Desejo;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 public class DesejosFragment extends Fragment {
 
     private ArrayList<Desejo> desejos = new ArrayList<>();
+    private DesejoDAO desejoDAO;
 
     public DesejosFragment() {
         // Required empty public constructor
@@ -44,15 +46,8 @@ public class DesejosFragment extends Fragment {
         recyclerViewDesejos.setLayoutManager(linearLayoutManager);
         AdapterDesejos adapterDesejos = new AdapterDesejos();
         recyclerViewDesejos.setAdapter(adapterDesejos);
-        Desejo desejo = new Desejo();
-        desejo.setTitulo("Save the world");
-        desejo.setStatus("Status");
-        desejo.setTipo("Tipo");
-        desejo.setValor(BigDecimal.TEN);
-        desejos.add(desejo);
-        desejos.add(desejo);
-
-        desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);desejos.add(desejo);
+        desejoDAO = new DesejoDAO(getContext());
+        desejos = desejoDAO.getDesejos();
         adapterDesejos.atualiza(desejos);
 
     }

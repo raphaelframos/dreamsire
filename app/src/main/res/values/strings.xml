@@ -6,4 +6,24 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titulo">Título</string>
+    <string name="tipo">Tipo</string>
+    <string name="realizado">Realizado</string>
+    <string name="nao_realizado">Não realizado</string>
+    <string name="cancelado">Cancelado</string>
+    <string name="valor">Valor</string>
+    <string name="sonho">Sonho</string>
+    <string name="desejo">Desejo</string>
+    <string name="salvar">Salvar</string>
+
+    <string-array name="tipos">
+        <item>@string/desejo</item>
+        <item>@string/sonho</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>@string/realizado</item>
+        <item>@string/nao_realizado</item>
+        <item>@string/cancelado</item>
+    </string-array>
 </resources>
