@@ -1,4 +1,7 @@
 <resources>
+    <string name="facebook_app_id">258682661323424</string>
+    <string name="fb_login_protocol_scheme">fb258682661323424</string>
+
     <string name="app_name">Dreamsire</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -9,12 +12,14 @@
     <string name="titulo">Título</string>
     <string name="tipo">Tipo</string>
     <string name="realizado">Realizado</string>
-    <string name="nao_realizado">Não realizado</string>
+    <string name="aberto">Em aberto</string>
     <string name="cancelado">Cancelado</string>
     <string name="valor">Valor</string>
     <string name="sonho">Sonho</string>
     <string name="desejo">Desejo</string>
     <string name="salvar">Salvar</string>
+    <string name="novo_desejo">Novo Desejo</string>
+    <string name="admob">ca-app-pub-8207402738279311~4624281819</string>
 
     <string-array name="tipos">
         <item>@string/desejo</item>
@@ -22,8 +27,9 @@
     </string-array>
 
     <string-array name="status">
-        <item>@string/realizado</item>
-        <item>@string/nao_realizado</item>
+        <item>@string/aberto</item>
         <item>@string/cancelado</item>
+        <item>@string/realizado</item>
+
     </string-array>
 </resources>

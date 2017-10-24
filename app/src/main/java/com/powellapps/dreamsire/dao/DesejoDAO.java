@@ -3,6 +3,7 @@ package com.powellapps.dreamsire.dao;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.powellapps.dreamsire.bd.ComandosSql;
 import com.powellapps.dreamsire.model.Desejo;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
 
@@ -19,9 +20,22 @@ public class DesejoDAO extends AbstractDAO{
     }
 
     public void salva(Desejo desejo) {
+        if(desejo.getId() == null){
+            adiciona(desejo);
+        }else{
+            atualiza(desejo);
+        }
+
+    }
+
+    public void adiciona(Desejo desejo){
         getWritableDatabase()
                 .insert(ConstantsUtils.TABELA_DESEJO,
                         null, desejo.getValues());
+    }
+
+    public void atualiza(Desejo desejo){
+        getWritableDatabase().update(ConstantsUtils.TABELA_DESEJO, desejo.getValues(), ConstantsUtils.DESEJO_ID + " = ?", new String[] {desejo.getId().toString()});
     }
 
     public int getQuantidadeDeDesejos() {
@@ -42,5 +56,27 @@ public class DesejoDAO extends AbstractDAO{
         }
         fecha(cursorDesejo);
         return desejos;
+    }
+
+    public ArrayList<Desejo> getDesejos(String idDoUsuario) {
+
+        ArrayList<Desejo> desejos = new ArrayList<>();
+        Cursor cursorDesejo = getReadableDatabase()
+                .query(ConstantsUtils.TABELA_DESEJO, null, ConstantsUtils.DESEJO_ID_USUARIO + " = ?", new String[] {idDoUsuario},null,null,null);
+        while (cursorDesejo.moveToNext()){
+            Desejo desejo = new Desejo(cursorDesejo);
+            desejos.add(desejo);
+        }
+        fecha(cursorDesejo);
+        return desejos;
+    }
+
+    public String getQuantidadeDeDesejos(String idDoUsuario, String status) {
+        ArrayList<Desejo> desejos = new ArrayList<>();
+        Cursor cursorDesejo = getReadableDatabase()
+                .query(ConstantsUtils.TABELA_DESEJO, null, ConstantsUtils.DESEJO_ID_USUARIO + " = ? AND " + ConstantsUtils.DESEJO_STATUS + " = ?", new String[] {idDoUsuario, status},null,null,null);
+        Integer quantidade = cursorDesejo.getCount();
+        cursorDesejo.close();
+        return quantidade.toString();
     }
 }

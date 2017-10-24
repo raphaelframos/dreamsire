@@ -5,35 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_margin="10dp"
     tools:context="com.powellapps.dreamsire.NovoDesejoActivity">
 
-    <EditText
-        android:id="@+id/edit_titulo"
-        android:inputType="textCapSentences"
-        android:hint="@string/titulo"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/text_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:hint="Título"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/spinner_tipos"
         android:entries="@array/tipos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></Spinner>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/text_valor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Valor"/>
+
+    </android.support.design.widget.TextInputLayout>
+
     <Spinner
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/spinner_status"
         android:entries="@array/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></Spinner>
 
-    <EditText
-        android:inputType="numberDecimal"
-        android:id="@+id/edit_valor"
-        android:hint="@string/valor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
     <Button
+        style="@style/ButtonPattern"
+        android:layout_marginTop="10dp"
         android:id="@+id/button_salvar"
         android:text="@string/salvar"
         android:layout_width="match_parent"

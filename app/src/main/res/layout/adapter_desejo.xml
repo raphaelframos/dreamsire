@@ -13,7 +13,8 @@
         android:layout_height="wrap_content">
 
         <com.powellapps.dreamsire.utils.RobotoUtils
-            android:textSize="26sp"
+            android:textSize="27sp"
+            android:textStyle="bold"
             android:id="@+id/text_titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

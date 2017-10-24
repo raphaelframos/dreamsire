@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.adapter.AdapterDesejos;
 import com.powellapps.dreamsire.dao.DesejoDAO;
+import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.Desejo;
 
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class DesejosFragment extends Fragment {
 
     private ArrayList<Desejo> desejos = new ArrayList<>();
     private DesejoDAO desejoDAO;
+    private UsuarioDao usuarioDao;
 
     public DesejosFragment() {
         // Required empty public constructor
@@ -44,10 +46,11 @@ public class DesejosFragment extends Fragment {
         RecyclerView recyclerViewDesejos = (RecyclerView) getView().findViewById(R.id.recycler_desejos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewDesejos.setLayoutManager(linearLayoutManager);
-        AdapterDesejos adapterDesejos = new AdapterDesejos();
+        AdapterDesejos adapterDesejos = new AdapterDesejos(getActivity());
         recyclerViewDesejos.setAdapter(adapterDesejos);
         desejoDAO = new DesejoDAO(getContext());
-        desejos = desejoDAO.getDesejos();
+        usuarioDao = new UsuarioDao(getContext());
+        desejos = desejoDAO.getDesejos(usuarioDao.getUsuario().getIdRedeSocial());
         adapterDesejos.atualiza(desejos);
 
     }

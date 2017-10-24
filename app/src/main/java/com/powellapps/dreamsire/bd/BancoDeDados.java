@@ -18,11 +18,12 @@ public class BancoDeDados extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+      //  db.execSQL("DROP TABLE IF EXISTS " + ConstantsUtils.TABELA_DESEJO);
         db.execSQL(ComandosSql.CRIAR_TABELA_DESEJO);
+        db.execSQL(ComandosSql.CRIAR_TABELA_USUARIO);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }

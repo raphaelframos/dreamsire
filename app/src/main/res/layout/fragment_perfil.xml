@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.powellapps.dreamsire.fragments.PerfilFragment">
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/image_foto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/text_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TableLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <TextView
+                android:layout_weight="1"
+                android:text="Abertos"
+                android:layout_width="0dip"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Realizados"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Cancelados"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/text_abertos"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/text_realizados"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/text_cancelados"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

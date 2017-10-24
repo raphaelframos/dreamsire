@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "215359315145",
+    "firebase_url": "https://dreamsire-2927e.firebaseio.com",
+    "project_id": "dreamsire-2927e",
+    "storage_bucket": "dreamsire-2927e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215359315145:android:a532775512341936",
+        "android_client_info": {
+          "package_name": "com.powellapps.dreamsire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215359315145-ejenfp1ufaaqkgrp7q9fk7c3801mb4ea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.powellapps.dreamsire",
+            "certificate_hash": "ad15ee6bf589c6cbf3daece6319e0d3bef95c17a"
+          }
+        },
+        {
+          "client_id": "215359315145-2eao1039o2pqc8126h4d7756thn606q0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJvZJ-vun14DsywRxqAIj2pV4ufWgWv-M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215359315145-2eao1039o2pqc8126h4d7756thn606q0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
