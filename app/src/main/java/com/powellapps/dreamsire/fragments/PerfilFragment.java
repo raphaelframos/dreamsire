@@ -56,11 +56,20 @@ public class PerfilFragment extends Fragment {
         desejoDAO = new DesejoDAO(getContext());
 
         Usuario usuario = usuarioDao.getUsuario();
-        Picasso.with(getContext()).load(usuario.getFoto()).into(imageViewFoto);
+
         textViewNome.setText(usuario.getNome());
         textViewAbertos.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.aberto)));
         textViewCancelados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.cancelado)));
         textViewRealizados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.realizado)));
+        mostraFoto(usuario);
 
+    }
+
+    private void mostraFoto(Usuario usuario) {
+        try {
+            Picasso.with(getContext()).load(usuario.getFoto()).into(imageViewFoto);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

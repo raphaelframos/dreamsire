@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class DesejosFragment extends Fragment {
 
-    private ArrayList<Desejo> desejos = new ArrayList<>();
+    private ArrayList<Desejo> desejos;
     private DesejoDAO desejoDAO;
     private UsuarioDao usuarioDao;
 
@@ -36,22 +36,30 @@ public class DesejosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_desejos, container, false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         RecyclerView recyclerViewDesejos = (RecyclerView) getView().findViewById(R.id.recycler_desejos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewDesejos.setLayoutManager(linearLayoutManager);
         AdapterDesejos adapterDesejos = new AdapterDesejos(getActivity());
         recyclerViewDesejos.setAdapter(adapterDesejos);
-        desejoDAO = new DesejoDAO(getContext());
-        usuarioDao = new UsuarioDao(getContext());
-        desejos = desejoDAO.getDesejos(usuarioDao.getUsuario().getIdRedeSocial());
+        getDesejos();
         adapterDesejos.atualiza(desejos);
 
+    }
+
+    private void getDesejos() {
+        desejoDAO = new DesejoDAO(getContext());
+        usuarioDao = new UsuarioDao(getContext());
+        try {
+            desejos = desejoDAO.getDesejos(usuarioDao.getUsuario().getIdRedeSocial());
+        }catch (Exception e){
+            desejos = new ArrayList<>();
+            e.printStackTrace();
+        }
     }
 }
