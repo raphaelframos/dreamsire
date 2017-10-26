@@ -20,6 +20,7 @@
     <string name="salvar">Salvar</string>
     <string name="novo_desejo">Novo Desejo</string>
     <string name="admob">ca-app-pub-8207402738279311~4624281819</string>
+    <string name="campo_branco">Campo em branco!</string>
 
     <string-array name="tipos">
         <item>@string/desejo</item>

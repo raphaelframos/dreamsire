@@ -2,6 +2,7 @@ package com.powellapps.dreamsire.dao;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.powellapps.dreamsire.bd.ComandosSql;
 import com.powellapps.dreamsire.model.Desejo;
@@ -20,6 +21,7 @@ public class DesejoDAO extends AbstractDAO{
     }
 
     public void salva(Desejo desejo) {
+        Log.v("", "Teste " + desejo.getId());
         if(desejo.getId() == null){
             adiciona(desejo);
         }else{
@@ -35,7 +37,8 @@ public class DesejoDAO extends AbstractDAO{
     }
 
     public void atualiza(Desejo desejo){
-        getWritableDatabase().update(ConstantsUtils.TABELA_DESEJO, desejo.getValues(), ConstantsUtils.DESEJO_ID + " = ?", new String[] {desejo.getId().toString()});
+        Integer id = getWritableDatabase().update(ConstantsUtils.TABELA_DESEJO, desejo.getValues(), ConstantsUtils.DESEJO_ID + " = ?", new String[] {desejo.getId().toString()});
+        Log.v("", "Olco " + id);
     }
 
     public int getQuantidadeDeDesejos() {
@@ -78,5 +81,20 @@ public class DesejoDAO extends AbstractDAO{
         Integer quantidade = cursorDesejo.getCount();
         cursorDesejo.close();
         return quantidade.toString();
+    }
+
+    public void remove(Integer id) {
+        getWritableDatabase().delete(ConstantsUtils.TABELA_DESEJO, ConstantsUtils.DESEJO_ID + " = ? ", new String[] {id.toString()});
+    }
+
+    public ArrayList<Desejo> getDesejosOrdenados(String idRedeSocial) {
+        ArrayList<Desejo> desejos = new ArrayList<>();
+        Cursor cursorDesejo = getReadableDatabase().rawQuery(ComandosSql.SELECIONA_DESEJOS_ORDENADOS, new String[] {idRedeSocial});
+        while (cursorDesejo.moveToNext()){
+            Desejo desejo = new Desejo(cursorDesejo);
+            desejos.add(desejo);
+        }
+        fecha(cursorDesejo);
+        return desejos;
     }
 }

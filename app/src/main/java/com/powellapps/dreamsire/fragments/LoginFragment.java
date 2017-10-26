@@ -41,7 +41,7 @@ import static com.facebook.login.widget.ProfilePictureView.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment implements GoogleLoginActivity.CallbackLogin{
+public class LoginFragment extends Fragment{
 
 
     private CallbackManager mCallbackManager;
@@ -148,10 +148,5 @@ public class LoginFragment extends Fragment implements GoogleLoginActivity.Callb
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-    }
-
-    @Override
-    public void update(Usuario usuario) {
-        Log.v("", "Tamo funcionando " + usuario.getFoto());
     }
 }

@@ -22,7 +22,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
 
     private static final int RC_SIGN_IN = 1234;
     private GoogleApiClient mGoogleApiClient;
-    private String TAG = "tag";
     private UsuarioDao usuarioDao;
 
     @Override
@@ -35,7 +34,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -46,7 +45,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
@@ -78,12 +77,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             usuarioDao.salva(usuario);
             setResult(RESULT_OK);
             finish();
-
-        ///    mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-         //   updateUI(true);
-        } else {
-            // Signed out, show unauthenticated UI.
-         //   updateUI(false);
         }
     }
 
@@ -91,14 +84,9 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
-    }
-
-    public interface CallbackLogin {
-        void update(Usuario usuario);
     }
 }

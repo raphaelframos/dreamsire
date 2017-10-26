@@ -6,6 +6,7 @@
     tools:context="com.powellapps.dreamsire.fragments.PerfilFragment">
 
     <ImageView
+        android:layout_margin="5dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/image_foto"
         android:layout_width="match_parent"

@@ -46,7 +46,7 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
             public void onClick(View v) {
                 Intent it = new Intent(activity, NovoDesejoActivity.class);
                 it.putExtra(ConstantsUtils.DESEJO, desejo);
-                activity.startActivity(it);
+                activity.startActivityForResult(it, 1);
             }
         });
 
@@ -54,6 +54,7 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
             holder.textViewTitulo.setPaintFlags(holder.textViewTitulo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }else if(desejo.esta(activity.getString(R.string.cancelado))){
             holder.textViewTitulo.setTextColor(Color.RED);
+            holder.textViewTitulo.setAlpha(0.1f);
         }
      //
     }

@@ -19,4 +19,6 @@ public class ComandosSql {
             ConstantsUtils.USUARIO_ID_REDE_SOCIAL + " TEXT, " + ConstantsUtils.USUARIO_FOTO + " TEXT" +
             ")";
     public static final String SELECIONA_DESEJO_DO_USUARIO = "SELECT * FROM " + ConstantsUtils.TABELA_USUARIO + " WHERE " + ConstantsUtils.DESEJO_ID_USUARIO + " = 1";
+    public static final String SELECIONA_DESEJOS_ORDENADOS = "SELECT * FROM " + ConstantsUtils.TABELA_DESEJO + " WHERE " +
+            ConstantsUtils.DESEJO_ID_USUARIO + " = ? ORDER BY " + ConstantsUtils.DESEJO_TITULO;
 }

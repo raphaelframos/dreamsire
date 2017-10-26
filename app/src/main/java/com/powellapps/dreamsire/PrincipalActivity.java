@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,8 @@ public class PrincipalActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButtonNovo;
     private BottomNavigationView navigation;
 
+    private DesejosFragment desejoFragment = new DesejosFragment();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -31,7 +34,7 @@ public class PrincipalActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentUtils.replace(PrincipalActivity.this, R.id.fragment_principal, new DesejosFragment());
+                    FragmentUtils.replace(PrincipalActivity.this, desejoFragment, ConstantsUtils.TAG_DESEJO);
                     return true;
 
                 case R.id.navigation_notifications:
@@ -73,11 +76,20 @@ public class PrincipalActivity extends AppCompatActivity {
 
         if(requestCode == ConstantsUtils.NOVO_DESEJO){
             if(resultCode == RESULT_OK){
+                try{
+                    desejoFragment.atualiza();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 navigation.setSelectedItemId(R.id.navigation_home);
+
+
             }
         }else if(requestCode == ConstantsUtils.LOGIN){
             if(resultCode == RESULT_OK){
                 FragmentUtils.replace(PrincipalActivity.this, R.id.fragment_principal, new PerfilFragment());
+                navigation.setSelectedItemId(R.id.navigation_notifications);
+
             }
         }
     }

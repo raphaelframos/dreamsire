@@ -43,4 +43,8 @@ public class UsuarioDao extends AbstractDAO{
         cursor.close();
         return usuario;
     }
+
+    public void deleta() {
+
+    }
 }
