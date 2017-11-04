@@ -20,24 +20,24 @@ public class DesejoDAO extends AbstractDAO{
         super(context);
     }
 
-    public void salva(Desejo desejo) {
-        Log.v("", "Teste " + desejo.getId());
+    public Long salva(Desejo desejo) {
         if(desejo.getId() == null){
-            adiciona(desejo);
+            return adiciona(desejo);
         }else{
             atualiza(desejo);
+            return desejo.getId().longValue();
         }
 
     }
 
-    public void adiciona(Desejo desejo){
-        getWritableDatabase()
+    public Long adiciona(Desejo desejo){
+        return getWritableDatabase()
                 .insert(ConstantsUtils.TABELA_DESEJO,
-                        null, desejo.getValues());
+                        null, desejo.retornaValues());
     }
 
     public void atualiza(Desejo desejo){
-        Integer id = getWritableDatabase().update(ConstantsUtils.TABELA_DESEJO, desejo.getValues(), ConstantsUtils.DESEJO_ID + " = ?", new String[] {desejo.getId().toString()});
+        Integer id = getWritableDatabase().update(ConstantsUtils.TABELA_DESEJO, desejo.retornaValues(), ConstantsUtils.DESEJO_ID + " = ?", new String[] {desejo.getId().toString()});
         Log.v("", "Olco " + id);
     }
 

@@ -24,7 +24,9 @@ public class Usuario {
     }
 
     public Usuario() {
-
+        nome = "";
+        foto = "";
+        idRedeSocial = "";
     }
 
     public Integer getId() {
@@ -43,7 +45,7 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public ContentValues getValues() {
+    public ContentValues retornaValues() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ConstantsUtils.USUARIO_ID_REDE_SOCIAL, idRedeSocial);
         contentValues.put(ConstantsUtils.USUARIO_ID, id);

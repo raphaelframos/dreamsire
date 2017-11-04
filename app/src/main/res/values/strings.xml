@@ -21,11 +21,20 @@
     <string name="novo_desejo">Novo Desejo</string>
     <string name="admob">ca-app-pub-8207402738279311~4624281819</string>
     <string name="campo_branco">Campo em branco!</string>
+    <string name="privado">Privado</string>
+    <string name="publico">Público</string>
+    <string name="curtidas">curtidas</string>
 
     <string-array name="tipos">
         <item>@string/desejo</item>
         <item>@string/sonho</item>
     </string-array>
+
+    <string-array name="visibilidade">
+        <item>@string/publico</item>
+        <item>@string/privado</item>
+    </string-array>
+
 
     <string-array name="status">
         <item>@string/aberto</item>

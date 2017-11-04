@@ -1,5 +1,7 @@
 package com.powellapps.dreamsire;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +16,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.fragments.DesejosFragment;
+import com.powellapps.dreamsire.fragments.FeedFragment;
 import com.powellapps.dreamsire.fragments.LoginFragment;
 import com.powellapps.dreamsire.fragments.PerfilFragment;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
@@ -34,7 +38,11 @@ public class PrincipalActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentUtils.replace(PrincipalActivity.this, desejoFragment, ConstantsUtils.TAG_DESEJO);
+                    FragmentUtils.replace(PrincipalActivity.this, R.id.fragment_principal, desejoFragment);
+                    return true;
+
+                case R.id.navigation_feed:
+                    FragmentUtils.replace(PrincipalActivity.this, R.id.fragment_principal, new FeedFragment());
                     return true;
 
                 case R.id.navigation_notifications:
@@ -65,7 +73,21 @@ public class PrincipalActivity extends AppCompatActivity {
         floatingActionButtonNovo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getApplicationContext(), NovoDesejoActivity.class), ConstantsUtils.NOVO_DESEJO);
+                if(new UsuarioDao(getApplicationContext()).existeUsuario()){
+                    startActivityForResult(new Intent(getApplicationContext(), NovoDesejoActivity.class), ConstantsUtils.NOVO_DESEJO);
+                }else {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(PrincipalActivity.this);
+                    alertDialog.setMessage("Você precisa estar logado para criar seus desejos.");
+                    alertDialog.setNeutralButton("Logar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent it = new Intent(PrincipalActivity.this, GoogleLoginActivity.class);
+                            startActivityForResult(it, ConstantsUtils.LOGIN);
+                        }
+                    });
+                    alertDialog.show();
+                }
+
             }
         });
     }

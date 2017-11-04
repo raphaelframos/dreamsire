@@ -18,7 +18,8 @@ public class Desejo implements Serializable{
     private String titulo;
     private String tipo;
     private String status;
-    private BigDecimal valor;
+    private String valor;
+    private String visibilidade;
     private String idUsuario;
 
     public Desejo(){}
@@ -30,6 +31,7 @@ public class Desejo implements Serializable{
         setValor(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_VALOR)));
         setTipo(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_TIPO)));
         setIdUsuario(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_ID_USUARIO)));
+        setVisibilidade(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_VISILIDADE)));
     }
 
     public String getTitulo() {
@@ -56,20 +58,12 @@ public class Desejo implements Serializable{
         this.status = status;
     }
 
-    public BigDecimal getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
     public void setValor(String valor) {
-        try{
-            setValor(new BigDecimal(valor));
-        }catch (Exception e){
-            setValor(BigDecimal.ZERO);
-        }
+        this.valor = valor;
     }
 
     public Integer getId() {
@@ -80,13 +74,14 @@ public class Desejo implements Serializable{
         this.id = id;
     }
 
-    public ContentValues getValues() {
+    public ContentValues retornaValues() {
         ContentValues values = new ContentValues();
         values.put(ConstantsUtils.DESEJO_TITULO, titulo);
         values.put(ConstantsUtils.DESEJO_STATUS, status);
         values.put(ConstantsUtils.DESEJO_VALOR, valor.toString());
         values.put(ConstantsUtils.DESEJO_TIPO, tipo);
         values.put(ConstantsUtils.DESEJO_ID_USUARIO, idUsuario);
+        values.put(ConstantsUtils.DESEJO_VISILIDADE, visibilidade);
         return values;
     }
 
@@ -101,4 +96,17 @@ public class Desejo implements Serializable{
     public boolean esta(String status) {
         return this.status.equalsIgnoreCase(status);
     }
+
+    public String getVisibilidade() {
+        return visibilidade;
+    }
+
+    public void setVisibilidade(String visibilidade) {
+        this.visibilidade = visibilidade;
+    }
+
+    public boolean isPublico(String visibilidade) {
+        return visibilidade.equalsIgnoreCase(getVisibilidade());
+    }
+
 }

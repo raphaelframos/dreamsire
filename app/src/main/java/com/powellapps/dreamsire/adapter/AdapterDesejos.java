@@ -52,9 +52,16 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
 
         if(desejo.esta(activity.getString(R.string.realizado))){
             holder.textViewTitulo.setPaintFlags(holder.textViewTitulo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textViewTitulo.setAlpha(0.9f);
+            holder.textViewTitulo.setTextColor(Color.GRAY);
         }else if(desejo.esta(activity.getString(R.string.cancelado))){
             holder.textViewTitulo.setTextColor(Color.RED);
-            holder.textViewTitulo.setAlpha(0.1f);
+            holder.textViewTitulo.setPaintFlags(holder.textViewTitulo.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.textViewTitulo.setAlpha(0.2f);
+        }else{
+            holder.textViewTitulo.setAlpha(1f);
+            holder.textViewTitulo.setPaintFlags(holder.textViewTitulo.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.textViewTitulo.setTextColor(Color.DKGRAY);
         }
      //
     }

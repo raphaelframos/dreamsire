@@ -1,10 +1,7 @@
 package com.powellapps.dreamsire.dao;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.powellapps.dreamsire.model.Usuario;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
@@ -21,9 +18,9 @@ public class UsuarioDao extends AbstractDAO{
 
     public void salva(Usuario usuario) {
         if(usuario.getId() == null || usuario.getId() == 0){
-            getWritableDatabase().insert(ConstantsUtils.TABELA_USUARIO, null, usuario.getValues());
+            getWritableDatabase().insert(ConstantsUtils.TABELA_USUARIO, null, usuario.retornaValues());
         }else{
-            getWritableDatabase().update(ConstantsUtils.TABELA_USUARIO, usuario.getValues(), ConstantsUtils.USUARIO_ID + " = ?",
+            getWritableDatabase().update(ConstantsUtils.TABELA_USUARIO, usuario.retornaValues(), ConstantsUtils.USUARIO_ID + " = ?",
                     new String[] {usuario.getId().toString()});
         }
     }

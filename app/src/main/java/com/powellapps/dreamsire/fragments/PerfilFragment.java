@@ -21,6 +21,7 @@ import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.dao.DesejoDAO;
 import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.Usuario;
+import com.powellapps.dreamsire.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -74,16 +75,18 @@ public class PerfilFragment extends Fragment {
     }
 
     private void mostraDados(Usuario usuario) {
-        textViewNome.setText(usuario.getNome());
-        textViewAbertos.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.aberto)));
-        textViewCancelados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.cancelado)));
-        textViewRealizados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.realizado)));
-        mostraFoto(usuario);
+        try {
+            textViewNome.setText(usuario.getNome());
+            textViewAbertos.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.aberto)));
+            textViewCancelados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.cancelado)));
+            textViewRealizados.setText(desejoDAO.getQuantidadeDeDesejos(usuario.getIdRedeSocial(), getString(R.string.realizado)));
+            mostraFoto(usuario);
+        }catch (Exception e){}
     }
 
     private void mostraFoto(Usuario usuario) {
         try {
-            Picasso.with(getContext()).load(usuario.getFoto()).into(imageViewFoto);
+            Picasso.with(getContext()).load(usuario.getFoto()).transform(new CircleTransform()).into(imageViewFoto);
         }catch (Exception e){
             e.printStackTrace();
         }
