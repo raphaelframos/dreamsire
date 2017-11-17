@@ -128,7 +128,11 @@ public class NovoDesejoActivity extends AppCompatActivity {
     private void finaliza() {
         setResult(RESULT_OK);
         finish();
-        progressDialog.dismiss();
+        try {
+            progressDialog.dismiss();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private boolean capturaDados() {

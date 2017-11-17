@@ -42,11 +42,9 @@ public class PerfilFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil, container, false);
     }
 
@@ -58,7 +56,6 @@ public class PerfilFragment extends Fragment {
         iniciaDao();
         Usuario usuario = usuarioDao.getUsuario();
         mostraDados(usuario);
-
     }
 
     private void iniciaDao() {
