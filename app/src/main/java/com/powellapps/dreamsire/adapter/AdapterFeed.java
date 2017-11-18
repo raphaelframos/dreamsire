@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.powellapps.dreamsire.GoogleLoginActivity;
 import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.DesejoFirebase;
+import com.powellapps.dreamsire.model.Usuario;
 import com.powellapps.dreamsire.utils.CircleTransform;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
 import com.powellapps.dreamsire.utils.FirebaseUtils;
@@ -29,11 +31,16 @@ import java.util.ArrayList;
 
 public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder>{
     private final FragmentActivity activity;
+    private Usuario usuario = new Usuario();
     ArrayList<DesejoFirebase> desejosFirebase = new ArrayList<>();
 
     public AdapterFeed(FragmentActivity activity, ArrayList<DesejoFirebase> desejosFirebase) {
         this.desejosFirebase = desejosFirebase;
         this.activity = activity;
+        UsuarioDao usuarioDao = new UsuarioDao(activity);
+        try {
+            usuario = usuarioDao.getUsuario();
+        }catch (Exception e){}
     }
 
     @Override
@@ -52,7 +59,12 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
             Picasso.with(activity).load(desejoFirebase.getUsuario().getFoto()).transform(new CircleTransform())
                     .into(holder.imageViewFoto);
         }catch (Exception e){
-            e.printStackTrace();
+        }
+
+        if(usuarioCurtiu(desejoFirebase)){
+            holder.imageViewCurtir.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_bom));
+        }else{
+            holder.imageViewCurtir.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_curtir));
         }
 
         holder.textViewCurtidas.setText(desejoFirebase.getCurtidas().size() + " " + activity.getString(R.string.curtidas));
@@ -60,9 +72,21 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
             @Override
             public void onClick(View v) {
                 try {
-                    UsuarioDao usuarioDao = new UsuarioDao(activity);
-                    desejoFirebase.defineCurtida(usuarioDao.getUsuario().getIdRedeSocial());
-                    FirebaseUtils.atualiza(desejoFirebase);
+                    if(usuario.getIdRedeSocial().isEmpty()){
+                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+                        alertDialog.setMessage("Você precisa estar logado para curtir.");
+                        alertDialog.setNeutralButton("Logar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent it = new Intent(activity, GoogleLoginActivity.class);
+                                activity.startActivityForResult(it, ConstantsUtils.LOGIN);
+                            }
+                        });
+                        alertDialog.show();
+                    }else {
+                        desejoFirebase.defineCurtida(usuario.getIdRedeSocial());
+                        FirebaseUtils.atualiza(desejoFirebase);
+                    }
                 }catch (Exception e){
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
                     alertDialog.setMessage("Você precisa estar logado para curtir.");
@@ -77,6 +101,10 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
                 }
             }
         });
+    }
+
+    private boolean usuarioCurtiu(DesejoFirebase desejoFirebase) {
+        return desejoFirebase.getCurtidas().contains(usuario.getIdRedeSocial());
     }
 
     @Override

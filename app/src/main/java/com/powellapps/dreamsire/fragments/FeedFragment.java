@@ -65,13 +65,19 @@ public class FeedFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                GenericTypeIndicator<HashMap<String, DesejoFirebase>> objectsGTypeInd = new GenericTypeIndicator<HashMap<String, DesejoFirebase>>() {};
-                Map<String, DesejoFirebase> objectHashMap = dataSnapshot.getValue(objectsGTypeInd);
-                ArrayList<DesejoFirebase> desejosFirebase = new ArrayList<>(objectHashMap.values());
-                Collections.sort(desejosFirebase);
-                AdapterFeed adapterFeed = new AdapterFeed(getActivity(), desejosFirebase);
-                recyclerView.setAdapter(adapterFeed);
-                progressDialog.dismiss();
+                try {
+                    GenericTypeIndicator<HashMap<String, DesejoFirebase>> objectsGTypeInd = new GenericTypeIndicator<HashMap<String, DesejoFirebase>>() {
+                    };
+                    Map<String, DesejoFirebase> objectHashMap = dataSnapshot.getValue(objectsGTypeInd);
+                    ArrayList<DesejoFirebase> desejosFirebase = new ArrayList<>(objectHashMap.values());
+                    Collections.sort(desejosFirebase);
+                    AdapterFeed adapterFeed = new AdapterFeed(getActivity(), desejosFirebase);
+                    recyclerView.setAdapter(adapterFeed);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    progressDialog.dismiss();
+                }
             }
 
             @Override

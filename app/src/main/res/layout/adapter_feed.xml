@@ -64,7 +64,7 @@
                 android:id="@+id/image_curtir"
                 android:padding="5dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_action_bom"
+                android:src="@drawable/ic_action_curtir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
