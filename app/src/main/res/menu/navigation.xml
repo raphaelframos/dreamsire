@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_action_meus_desejos"
-        android:title="Meus desejos" />
-
-    <item
         android:id="@+id/navigation_feed"
         android:icon="@drawable/ic_feed"
-        android:title="Desejos" />
+        android:title="@string/desejos" />
 
     <item
         android:id="@+id/navigation_notifications"

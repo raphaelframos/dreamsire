@@ -15,51 +15,69 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.powellapps.dreamsire.dao.DesejoDAO;
 import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.Desejo;
-import com.powellapps.dreamsire.model.Singleton;
+import com.powellapps.dreamsire.model.DesejoFirebase;
 import com.powellapps.dreamsire.model.Usuario;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
 import com.powellapps.dreamsire.utils.FirebaseUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NovoDesejoActivity extends AppCompatActivity {
 
-    private static final String NOVO_DESEJO = "novo_desejo";
     private EditText editTextTitulo;
     private EditText editTextValor;
+    private EditText editTextDescricao;
     private Spinner spinnerTipos;
     private Spinner spinnerStatus;
-    private Spinner spinnerVisibilidade;
     private Button buttonSalvar;
-    private DesejoDAO desejoDAO;
     private Desejo desejo;
-    private UsuarioDao usuarioDao;
     private ProgressDialog progressDialog;
+    private boolean feed;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_desejo);
-        iniciaDao();
         definindoViews();
         buttonSalvar.setOnClickListener(salva);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        desejo = (Desejo) getIntent().getSerializableExtra(ConstantsUtils.DESEJO);
+      //  desejo = (Desejo) getIntent().getSerializableExtra(ConstantsUtils.DESEJO);
+        feed = getIntent().getBooleanExtra(ConstantsUtils.FEED, false);
         if(estouEditando()){
             editTextValor.setText(desejo.getValor().toString());
             editTextTitulo.setText(desejo.getTitulo());
+            editTextDescricao.setText(desejo.getDescricao());
             spinnerTipos.setSelection(retornaPosicaoDoTipo(desejo.getTipo()));
             spinnerStatus.setSelection(retornaPosicaoDoStatus(desejo.getStatus()));
-            spinnerVisibilidade.setSelection(retornaPosicaoDeVisibilidade(desejo.getVisibilidade()));
-            getSupportActionBar().setTitle("Editando desejo");
+
+            String title = "";
+            if(false){
+                title = "Editando desejo";
+            }else{
+                title = user.getDisplayName();
+                buttonSalvar.setVisibility(View.GONE);
+                editTextTitulo.setEnabled(false);
+                editTextDescricao.setEnabled(false);
+                editTextValor.setEnabled(false);
+                spinnerStatus.setEnabled(false);
+                spinnerTipos.setEnabled(false);
+
+            }
+            getSupportActionBar().setTitle(title);
         }
 
         spinnerTipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,7 +98,12 @@ public class NovoDesejoActivity extends AppCompatActivity {
     }
 
     private boolean estouEditando() {
-        return desejo != null;
+        try{
+            return !desejo.getId().isEmpty();
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     private int retornaPosicaoDoTipo(String tipo) {
@@ -88,19 +111,9 @@ public class NovoDesejoActivity extends AppCompatActivity {
         return tipos.indexOf(tipo);
     }
 
-    private int retornaPosicaoDeVisibilidade(String visibilidade) {
-        ArrayList<String> lista = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.visibilidade)));
-        return lista.indexOf(visibilidade);
-    }
-
     private int retornaPosicaoDoStatus(String status) {
         ArrayList<String> tipos = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.status)));
         return tipos.indexOf(status);
-    }
-
-    private void iniciaDao() {
-        desejoDAO = new DesejoDAO(this);
-        usuarioDao = new UsuarioDao(this);
     }
 
     private View.OnClickListener salva = new View.OnClickListener() {
@@ -110,16 +123,16 @@ public class NovoDesejoActivity extends AppCompatActivity {
                 progressDialog = new ProgressDialog(NovoDesejoActivity.this);
                 progressDialog.setMessage("Salvando desejo...");
                 progressDialog.show();
-                Long id = desejoDAO.salva(desejo);
 
-                if (desejo.isPublico(getString(R.string.publico))) {
-                    Usuario usuario = usuarioDao.getUsuario();
-                    desejo.setId(id.intValue());
-                    FirebaseUtils.salva(usuario, desejo);
-                    finaliza();
-                } else {
-                    finaliza();
+                desejo.setIdUsuario(user.getUid());
+                if(estouEditando()){
+                   // FirebaseUtils.atualiza(desejoFirebase);
+
+                }else {
+                    FirebaseUtils.salva(desejo);
                 }
+                finaliza();
+
 
             }
         }
@@ -148,19 +161,18 @@ public class NovoDesejoActivity extends AppCompatActivity {
         String valor = editTextValor.getText().toString();
         String status = (String) spinnerStatus.getSelectedItem();
         String tipo = spinnerTipos.getSelectedItem().toString();
-        String visibilidade = spinnerVisibilidade.getSelectedItem().toString();
+        String descricao = editTextDescricao.getText().toString();
         desejo.setValor(valor);
         desejo.setTipo(tipo);
         desejo.setStatus(status);
         desejo.setTitulo(titulo);
-        desejo.setVisibilidade(visibilidade);
-        desejo.setIdUsuario(usuarioDao.getUsuario().getIdRedeSocial());
+        desejo.setDescricao(descricao);
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(estouEditando()){
+        if(estouEditando() && !feed){
             getMenuInflater().inflate(R.menu.editar_desejo, menu);
         }
         return super.onCreateOptionsMenu(menu);
@@ -169,8 +181,14 @@ public class NovoDesejoActivity extends AppCompatActivity {
     public DialogInterface.OnClickListener removeDesejo = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            desejoDAO.remove(desejo.getId());
-            finaliza();
+            try {
+           //     FirebaseUtils.remove(desejoFirebase);
+            }catch (Exception e){
+             //   desejoDAO.remove(desejo.getId());
+            }finally {
+                finaliza();
+            }
+
         }
     };
 
@@ -195,6 +213,6 @@ public class NovoDesejoActivity extends AppCompatActivity {
         spinnerStatus = (Spinner) findViewById(R.id.spinner_status);
         spinnerTipos = (Spinner) findViewById(R.id.spinner_tipos);
         buttonSalvar = (Button) findViewById(R.id.button_salvar);
-        spinnerVisibilidade = (Spinner) findViewById(R.id.spinner_visibilidade);
+        editTextDescricao = (EditText) findViewById(R.id.text_descricao);
     }
 }

@@ -2,6 +2,9 @@ package com.powellapps.dreamsire.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -9,9 +12,10 @@ import java.util.Calendar;
  * Created by raphaelramos on 04/11/17.
  */
 
-public class DesejoFirebase implements Comparable<DesejoFirebase>{
+public class DesejoFirebase implements Comparable<DesejoFirebase>, Serializable{
 
-    private Usuario usuario;
+    private String id;
+    private FirebaseUser usuario;
     private Desejo desejo;
     private Long dataDeCriacao;
     private ArrayList<String> curtidas = new ArrayList<>();
@@ -20,11 +24,11 @@ public class DesejoFirebase implements Comparable<DesejoFirebase>{
         dataDeCriacao = Calendar.getInstance().getTimeInMillis();
     }
 
-    public Usuario getUsuario() {
+    public FirebaseUser getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(FirebaseUser usuario) {
         this.usuario = usuario;
     }
 
@@ -40,25 +44,13 @@ public class DesejoFirebase implements Comparable<DesejoFirebase>{
         return dataDeCriacao;
     }
 
-    public void setDataDeCriacao(Long dataDeCriacao) {
-        this.dataDeCriacao = dataDeCriacao;
-    }
-
-    public String retornaKey() {
-        return usuario.getIdRedeSocial() + desejo.getId();
-    }
-
     @Override
-    public int compareTo(@NonNull DesejoFirebase o) {
+    public int compareTo(DesejoFirebase o) {
         return o.getDataDeCriacao().compareTo(dataDeCriacao);
     }
 
     public ArrayList<String> getCurtidas() {
         return curtidas;
-    }
-
-    public void setCurtidas(ArrayList<String> curtidas) {
-        this.curtidas = curtidas;
     }
 
     public void defineCurtida(String idRedeSocial) {
@@ -70,5 +62,13 @@ public class DesejoFirebase implements Comparable<DesejoFirebase>{
         }else{
             curtidas.add(idRedeSocial);
         }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

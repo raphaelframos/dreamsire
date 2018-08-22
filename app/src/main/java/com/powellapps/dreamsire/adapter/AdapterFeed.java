@@ -5,17 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.powellapps.dreamsire.GoogleLoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.powellapps.dreamsire.NovoDesejoActivity;
 import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.dao.UsuarioDao;
+import com.powellapps.dreamsire.model.Desejo;
 import com.powellapps.dreamsire.model.DesejoFirebase;
 import com.powellapps.dreamsire.model.Usuario;
 import com.powellapps.dreamsire.utils.CircleTransform;
@@ -31,16 +32,11 @@ import java.util.ArrayList;
 
 public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder>{
     private final FragmentActivity activity;
-    private Usuario usuario = new Usuario();
-    ArrayList<DesejoFirebase> desejosFirebase = new ArrayList<>();
+    ArrayList<Desejo> desejosFirebase;
 
-    public AdapterFeed(FragmentActivity activity, ArrayList<DesejoFirebase> desejosFirebase) {
+    public AdapterFeed(FragmentActivity activity, ArrayList<Desejo> desejosFirebase) {
         this.desejosFirebase = desejosFirebase;
         this.activity = activity;
-        UsuarioDao usuarioDao = new UsuarioDao(activity);
-        try {
-            usuario = usuarioDao.getUsuario();
-        }catch (Exception e){}
     }
 
     @Override
@@ -52,15 +48,19 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
     @Override
     public void onBindViewHolder(FeedViewHolder holder, int position) {
 
-        final DesejoFirebase desejoFirebase = desejosFirebase.get(position);
-        holder.textViewNome.setText(desejoFirebase.getUsuario().getNome());
-        holder.textViewDesejo.setText(desejoFirebase.getDesejo().getTitulo());
+        final Desejo desejoFirebase = desejosFirebase.get(position);
+
         try {
-            Picasso.with(activity).load(desejoFirebase.getUsuario().getFoto()).transform(new CircleTransform())
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            holder.textViewNome.setText(currentUser.getDisplayName());
+            holder.textViewStatus.setText(desejoFirebase.getStatus());
+            holder.textViewDesejo.setText(desejoFirebase.getTitulo());
+            Picasso.with(activity).load(currentUser.getPhotoUrl().toString()).transform(new CircleTransform())
                     .into(holder.imageViewFoto);
         }catch (Exception e){
         }
 
+        /*
         if(usuarioCurtiu(desejoFirebase)){
             holder.imageViewCurtir.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_bom));
         }else{
@@ -78,14 +78,14 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
                         alertDialog.setNeutralButton("Logar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent it = new Intent(activity, GoogleLoginActivity.class);
-                                activity.startActivityForResult(it, ConstantsUtils.LOGIN);
+                             //   Intent it = new Intent(activity, GoogleLoginActivity.class);
+                            //    activity.startActivityForResult(it, ConstantsUtils.LOGIN);
                             }
                         });
                         alertDialog.show();
                     }else {
                         desejoFirebase.defineCurtida(usuario.getIdRedeSocial());
-                        FirebaseUtils.atualiza(desejoFirebase);
+                        FirebaseUtils.atualizaCurtidas(desejoFirebase);
                     }
                 }catch (Exception e){
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
@@ -93,18 +93,25 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
                     alertDialog.setNeutralButton("Logar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent it = new Intent(activity, GoogleLoginActivity.class);
-                            activity.startActivityForResult(it, ConstantsUtils.LOGIN);
+                       //     Intent it = new Intent(activity, GoogleLoginActivity.class);
+                          //  activity.startActivityForResult(it, ConstantsUtils.LOGIN);
                         }
                     });
                     alertDialog.show();
                 }
             }
         });
-    }
+        */
 
-    private boolean usuarioCurtiu(DesejoFirebase desejoFirebase) {
-        return desejoFirebase.getCurtidas().contains(usuario.getIdRedeSocial());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(activity, NovoDesejoActivity.class);
+                it.putExtra(ConstantsUtils.DESEJO, desejoFirebase);
+                it.putExtra(ConstantsUtils.FEED, true);
+                activity.startActivity(it);
+            }
+        });
     }
 
     @Override
@@ -118,6 +125,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
         private TextView textViewNome;
         private TextView textViewDesejo;
         private TextView textViewCurtidas;
+        private TextView textViewStatus;
         private ImageView imageViewCurtir;
 
         public FeedViewHolder(View itemView) {
@@ -128,6 +136,7 @@ public class AdapterFeed extends RecyclerView.Adapter<AdapterFeed.FeedViewHolder
             textViewNome = (TextView) itemView.findViewById(R.id.text_nome_feed);
             textViewCurtidas = (TextView) itemView.findViewById(R.id.text_curtidas);
             imageViewCurtir = (ImageView) itemView.findViewById(R.id.image_curtir);
+            textViewStatus = (TextView) itemView.findViewById(R.id.text_status);
         }
     }
 }

@@ -5,11 +5,13 @@ import android.database.Cursor;
 
 import com.powellapps.dreamsire.utils.ConstantsUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by raphaelramos on 20/10/17.
  */
 
-public class Usuario {
+public class Usuario implements Serializable{
 
     private Integer id;
     private String nome;

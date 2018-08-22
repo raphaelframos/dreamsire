@@ -24,6 +24,9 @@
     <string name="privado">Privado</string>
     <string name="publico">Público</string>
     <string name="curtidas">curtidas</string>
+    <string name="descricao">Descrição</string>
+    <string name="meus_desejos">Meus desejos</string>
+    <string name="desejos">Desejos</string>
 
     <string-array name="tipos">
         <item>@string/desejo</item>

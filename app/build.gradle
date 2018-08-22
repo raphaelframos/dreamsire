@@ -1,6 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.powellapps.dreamsire"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
     signingConfigs {
         config {
             keyAlias 'raphael'
@@ -9,46 +26,29 @@ android {
             storePassword 'rfr861130'
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
-    defaultConfig {
-        applicationId "com.powellapps.dreamsire"
-        minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 3
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-    }
+
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.firebase:firebase-auth:11.2.0'
-    compile 'com.google.firebase:firebase-database:11.2.0'
-    compile 'com.google.android.gms:play-services-auth:11.2.0'
-    compile 'com.google.firebase:firebase-ads:11.2.0'
-    compile 'com.facebook.android:facebook-login:[4,5)'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0-beta01'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0-beta01'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.google.firebase:firebase-database:15.0.0'
+    implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    compile 'com.google.firebase:firebase-firestore:15.0.0'
+    implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+    implementation 'com.google.firebase:firebase-ads:15.0.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
 }
-
-
-
 
 
 apply plugin: 'com.google.gms.google-services'

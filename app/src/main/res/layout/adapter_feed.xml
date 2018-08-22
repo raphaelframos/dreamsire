@@ -53,6 +53,14 @@
 
             <com.powellapps.dreamsire.utils.RobotoUtils
                 android:layout_marginLeft="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:id="@+id/text_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.powellapps.dreamsire.utils.RobotoUtils
+                android:layout_marginLeft="5dp"
                 android:textSize="15sp"
                 android:id="@+id/text_curtidas"
                 android:layout_width="match_parent"

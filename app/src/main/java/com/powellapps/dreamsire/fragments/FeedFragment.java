@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,14 +22,22 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.powellapps.dreamsire.R;
 import com.powellapps.dreamsire.adapter.AdapterFeed;
+import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.Desejo;
 import com.powellapps.dreamsire.model.DesejoFirebase;
+import com.powellapps.dreamsire.model.Usuario;
+import com.powellapps.dreamsire.ws.APIClient;
+import com.powellapps.dreamsire.ws.APIService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,12 +58,12 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_feed);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        final RecyclerView recyclerView = getView().findViewById(R.id.recycler_feed);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Buscando desejos...");
@@ -66,11 +75,10 @@ public class FeedFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 try {
-                    GenericTypeIndicator<HashMap<String, DesejoFirebase>> objectsGTypeInd = new GenericTypeIndicator<HashMap<String, DesejoFirebase>>() {
+                    GenericTypeIndicator<HashMap<String, Desejo>> objectsGTypeInd = new GenericTypeIndicator<HashMap<String, Desejo>>() {
                     };
-                    Map<String, DesejoFirebase> objectHashMap = dataSnapshot.getValue(objectsGTypeInd);
-                    ArrayList<DesejoFirebase> desejosFirebase = new ArrayList<>(objectHashMap.values());
-                    Collections.sort(desejosFirebase);
+                    Map<String, Desejo> objectHashMap = dataSnapshot.getValue(objectsGTypeInd);
+                    ArrayList<Desejo> desejosFirebase = new ArrayList<>(objectHashMap.values());
                     AdapterFeed adapterFeed = new AdapterFeed(getActivity(), desejosFirebase);
                     recyclerView.setAdapter(adapterFeed);
                 }catch (Exception e){
@@ -86,31 +94,6 @@ public class FeedFragment extends Fragment {
             }
         });
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

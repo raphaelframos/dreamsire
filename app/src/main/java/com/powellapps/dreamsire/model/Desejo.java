@@ -14,25 +14,16 @@ import java.math.BigDecimal;
 
 public class Desejo implements Serializable{
 
-    private Integer id;
+    private String id;
     private String titulo;
     private String tipo;
     private String status;
     private String valor;
-    private String visibilidade;
+    private String descricao;
     private String idUsuario;
 
     public Desejo(){}
 
-    public Desejo(Cursor cursor) {
-        setId(cursor.getInt(cursor.getColumnIndex(ConstantsUtils.DESEJO_ID)));
-        setTitulo(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_TITULO)));
-        setStatus(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_STATUS)));
-        setValor(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_VALOR)));
-        setTipo(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_TIPO)));
-        setIdUsuario(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_ID_USUARIO)));
-        setVisibilidade(cursor.getString(cursor.getColumnIndex(ConstantsUtils.DESEJO_VISILIDADE)));
-    }
 
     public String getTitulo() {
         return titulo;
@@ -66,23 +57,17 @@ public class Desejo implements Serializable{
         this.valor = valor;
     }
 
-    public Integer getId() {
-        return id;
+    public boolean esta(String status) {
+        return this.status.equalsIgnoreCase(status);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+
+    public String getDescricao() {
+        return descricao;
     }
 
-    public ContentValues retornaValues() {
-        ContentValues values = new ContentValues();
-        values.put(ConstantsUtils.DESEJO_TITULO, titulo);
-        values.put(ConstantsUtils.DESEJO_STATUS, status);
-        values.put(ConstantsUtils.DESEJO_VALOR, valor.toString());
-        values.put(ConstantsUtils.DESEJO_TIPO, tipo);
-        values.put(ConstantsUtils.DESEJO_ID_USUARIO, idUsuario);
-        values.put(ConstantsUtils.DESEJO_VISILIDADE, visibilidade);
-        return values;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getIdUsuario() {
@@ -93,20 +78,11 @@ public class Desejo implements Serializable{
         this.idUsuario = idUsuario;
     }
 
-    public boolean esta(String status) {
-        return this.status.equalsIgnoreCase(status);
+    public String getId() {
+        return id;
     }
 
-    public String getVisibilidade() {
-        return visibilidade;
+    public void setId(String id) {
+        this.id = id;
     }
-
-    public void setVisibilidade(String visibilidade) {
-        this.visibilidade = visibilidade;
-    }
-
-    public boolean isPublico(String visibilidade) {
-        return visibilidade.equalsIgnoreCase(getVisibilidade());
-    }
-
 }

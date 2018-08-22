@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.powellapps.dreamsire.NovoDesejoActivity;
 import com.powellapps.dreamsire.R;
+import com.powellapps.dreamsire.dao.UsuarioDao;
 import com.powellapps.dreamsire.model.Desejo;
+import com.powellapps.dreamsire.model.DesejoFirebase;
 import com.powellapps.dreamsire.utils.ConstantsUtils;
 
 import java.util.ArrayList;
@@ -25,9 +27,11 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
 
     private ArrayList<Desejo> desejos = new ArrayList<>();
     private FragmentActivity activity;
+    private UsuarioDao usuarioDao;
 
     public AdapterDesejos(FragmentActivity activity) {
         this.activity = activity;
+        usuarioDao = new UsuarioDao(activity);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
     }
 
     @Override
-    public void onBindViewHolder(DesejosViewHolder holder, int position) {
+    public void onBindViewHolder(DesejosViewHolder holder, final int position) {
 
         final Desejo desejo = desejos.get(position);
         holder.textViewTitulo.setText(desejo.getTitulo());
@@ -45,7 +49,10 @@ public class AdapterDesejos extends RecyclerView.Adapter<AdapterDesejos.DesejosV
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(activity, NovoDesejoActivity.class);
-                it.putExtra(ConstantsUtils.DESEJO, desejo);
+                DesejoFirebase desejoFirebase = new DesejoFirebase();
+             //   desejoFirebase.setUsuario(usuarioDao.getUsuario());
+                desejoFirebase.setDesejo(desejo);
+                it.putExtra(ConstantsUtils.DESEJO, desejoFirebase);
                 activity.startActivityForResult(it, 1);
             }
         });
